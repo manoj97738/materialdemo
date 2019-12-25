@@ -1,30 +1,111 @@
-import { Component } from '@angular/core';
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-}
+import { Component, ViewChild, OnInit } from '@angular/core';
+import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
+import { Router } from '@angular/router';
+import { FormGroup, FormControl } from '@angular/forms';
 
-const ELEMENT_DATA: PeriodicElement[] = [
-  { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
-  { position: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
-  { position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li' },
-  { position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be' },
-  { position: 5, name: 'Boron', weight: 10.811, symbol: 'B' },
-  { position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C' },
-  { position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N' },
-  { position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O' },
-  { position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F' },
-  { position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne' },
+const URLMapper = [
+	{ phase: 'pre-Design', url: '/management', redirect: true },
+	{ phase: 'Design', url: '/management', redirect: true }
 ];
+
 @Component({
-  selector: 'app-root',
-  templateUrl: './management.component.html',
-  styleUrls: ['./management.component.css']
+	selector: 'app-prod1',
+	templateUrl: './management.component.html',
+	styleUrls: ['./management.component.scss']
 })
-export class ManagementComponent {
-  title = 'ang-mat';
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
-  dataSource = ELEMENT_DATA;
+
+export class ManagementComponent implements OnInit {
+	managementForm: FormGroup;
+	@ViewChild(MatSort, { static: true }) sort: MatSort;
+	@ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+
+	dataSource: MatTableDataSource<any>;
+	managementData = {
+		expId: '',
+		analystName: '',
+		title: '',
+		descr: '',
+		startDate: '',
+		endDate: '',
+		hypoyhesis: '',
+		team: '',
+		pointOfContract: '',
+		experimentChannel: '',
+		experimentChannelTopic: '',
+		featureTested: '',
+		noOfVarient: '',
+		testPopulation: '',
+		experimentType: '',
+
+	}
+	constructor(private router: Router) {
+		this.managementForm = new FormGroup({
+			expId: new FormControl(''),
+			analystName: new FormControl(''),
+			title: new FormControl(''),
+			descr: new FormControl(''),
+			startDate: new FormControl(''),
+			endDate: new FormControl(''),
+			hypoyhesis: new FormControl(''),
+			team: new FormControl(''),
+			pointOfContract: new FormControl(''),
+			experimentChannel: new FormControl(''),
+			experimentChannelTopic: new FormControl(''),
+			featureTested: new FormControl(''),
+			noOfVarient: new FormControl(''),
+			testPopulation: new FormControl(''),
+			experimentType: new FormControl(''),
+
+		})
+	}
+
+	displayedColumns: String[] = [
+		'id',
+		'analyst',
+		'startDate',
+		'endDate',
+		'channel',
+		'team',
+		'title',
+		'phase'
+	];
+
+
+	ngOnInit(): void {
+
+		this.dataSource = new MatTableDataSource([]);
+		this.dataSource.sort = this.sort;
+
+		this.dataSource.paginator = this.paginator;
+
+
+	}
+	onSubmit() {
+		console.log(this.managementForm.value);
+		this.managementData = this.managementForm.value;
+	}
+
+	applyFilter(filterValue: string) {
+		filterValue = filterValue.trim();
+		filterValue = filterValue.toLowerCase();
+		this.dataSource.filter = filterValue;
+
+	}
+
+	redirectPage(row) {
+
+		URLMapper.map((data) => {
+			if (data.phase.toLowerCase() === row.phase.toLowerCase() && data.redirect) {
+				this.router.navigate([data.url]);
+			}
+		}
+
+		)
+
+	}
+	onSave() {
+		console.log(this.managementForm.value);
+		this.managementData = this.managementForm.value;
+
+	}
 }

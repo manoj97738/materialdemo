@@ -6,6 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MaterialModule } from './material.modules';
 import { CommonModule } from '@angular/common';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 
 const routes: Routes = [
@@ -23,7 +24,9 @@ const routes: Routes = [
     FormsModule,
     MatNativeDateModule,
     MaterialModule,
-    ReactiveFormsModule],
+    ReactiveFormsModule,
+    FlexLayoutModule,
+   ],
   exports: [RouterModule, ManagementComponent]
 })
 export class AppRoutingModule { }
