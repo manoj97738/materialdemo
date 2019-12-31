@@ -2,6 +2,8 @@ import { Component, ViewChild, OnInit } from '@angular/core';
 import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl } from '@angular/forms';
+import * as jspdf from 'jspdf';
+import html2canvas from 'html2canvas';
 
 const URLMapper = [
 	{ phase: 'pre-Design', url: '/management', redirect: true },
@@ -107,5 +109,20 @@ export class ManagementComponent implements OnInit {
 		console.log(this.managementForm.value);
 		this.managementData = this.managementForm.value;
 
+	}
+	public captureScreen(){
+		const data = document.getElementById('preview-management-report');
+		html2canvas(data).then(canvas => {
+			// Few necessary setting options
+			const imgWidth = 208;
+			const pageHeight = 295;
+			const imgHeight = canvas.height * imgWidth / canvas.width;
+			const heightLeft = imgHeight;
+			const contentDataURL = canvas.toDataURL('image/png');
+			const pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF
+			const position = 0;
+			pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)
+			pdf.save('management.pdf'); // Generated PDF
+		});
 	}
 }

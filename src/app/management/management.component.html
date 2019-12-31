@@ -111,11 +111,11 @@
                     </mat-form-field>
                     <button mat-raised-button color="primary" (click)="onSave()">Save</button>
                     <button mat-raised-button class="ml-em1" color="primary" (click)="onSave()">Continue to Design</button>
-                    <button mat-raised-button class="ml-em1" color="primary" (click)="onSave()">Download Report</button>
+                    <button mat-raised-button class="ml-em1" color="primary" (click)="captureScreen()">Download Report</button>
 
                 </form>
             </div>
-            <div fxFlex="50" class="sec3" fxFlex.xs="15">
+            <div fxFlex="50" class="sec3" fxFlex.xs="15" id="preview-management-report">
                 <div class="preExpReport">
                     <div>Experiment Id: {{managementData.expId}}</div>
                     <div>Analyst Name: {{managementData.analystName}}</div>
